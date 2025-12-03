@@ -1,65 +1,103 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="max-w-3xl mx-auto bg-white shadow-lg p-8 rounded-lg mt-10">
+<!-- Print Button -->
+<div class="max-w-4xl mx-auto mt-10 flex justify-end print:hidden">
+    <button onclick="printCV()" 
+        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+        Download as PDF
+    </button>
+</div>
 
-    <!-- Name & Role -->
-    <h1 class="text-3xl font-bold text-gray-900">{{ profile.name }}</h1>
-    <p class="text-lg text-gray-600 mt-1">{{ profile.role }}</p>
+<!-- Resume Container -->
+<div class="max-w-4xl mx-auto bg-white p-10 rounded-lg print-area">
 
-    <hr class="my-4">
+    <!-- HEADER -->
+    <h1 class="text-4xl font-bold text-gray-900">{{ profile.name }}</h1>
 
-    <!-- Contact -->
-    <h2 class="text-xl font-semibold mb-2">Contact Information</h2>
-    <p><strong>Email:</strong> {{ profile.email }}</p>
-    <p><strong>Phone:</strong> {{ profile.phone }}</p>
+    <p class="mt-2 text-gray-700">
+        {{ profile.address }} |
+        {{ profile.email }} |
+        {{ profile.phone }}
+    </p>
 
-    {% if profile.linkedin %}
-    <p><strong>LinkedIn:</strong> <a href="{{ profile.linkedin }}" class="text-blue-600">{{ profile.linkedin }}</a></p>
+    <p class="text-gray-700">
+        {% if profile.linkedin %} {{ profile.linkedin }} | {% endif %}
+        {% if profile.github %} {{ profile.github }} {% endif %}
+    </p>
+
+    <!-- SUMMARY -->
+    {% if profile.summary %}
+    <h2 class="mt-8 text-xl font-bold tracking-widest text-gray-800">SUMMARY</h2>
+    <p class="mt-2 text-gray-800 whitespace-pre-line">{{ profile.summary }}</p>
     {% endif %}
 
-    {% if profile.github %}
-    <p><strong>GitHub:</strong> <a href="{{ profile.github }}" class="text-blue-600">{{ profile.github }}</a></p>
-    {% endif %}
-
-    {% if profile.portfolio %}
-    <p><strong>Portfolio:</strong> <a href="{{ profile.portfolio }}" class="text-blue-600">{{ profile.portfolio }}</a></p>
-    {% endif %}
-
-    <hr class="my-4">
-
-    <!-- Summary -->
-    <h2 class="text-xl font-semibold mb-2">Professional Summary</h2>
-    <p class="text-gray-700">{{ profile.summary }}</p>
-
-    <hr class="my-4">
-
-    <!-- Education -->
-    <h2 class="text-xl font-semibold mb-2">Education</h2>
-    <p><strong>Degree:</strong> {{ profile.degree }}</p>
-    <p><strong>University:</strong> {{ profile.university }}</p>
-
-    <hr class="my-4">
-
-    <!-- Experience -->
+    <!-- EXPERIENCE -->
     {% if profile.experience %}
-    <h2 class="text-xl font-semibold mb-2">Experience</h2>
-    <p class="text-gray-700 whitespace-pre-line">{{ profile.experience }}</p>
-    <hr class="my-4">
+    <h2 class="mt-8 text-xl font-bold tracking-widest text-gray-800">WORK EXPERIENCE</h2>
+
+    <div class="mt-2 whitespace-pre-line text-gray-800">
+        {{ profile.experience }}
+    </div>
     {% endif %}
 
-    <!-- Skills -->
-    <h2 class="text-xl font-semibold mb-2">Skills</h2>
-    <p class="text-gray-700 whitespace-pre-line">{{ profile.skills }}</p>
-
-    <hr class="my-4">
-
-    <!-- Projects -->
+    <!-- PROJECTS -->
     {% if profile.projects %}
-    <h2 class="text-xl font-semibold mb-2">Projects</h2>
-    <p class="text-gray-700 whitespace-pre-line">{{ profile.projects }}</p>
+    <h2 class="mt-8 text-xl font-bold tracking-widest text-gray-800">PROJECTS</h2>
+
+    <div class="mt-2 whitespace-pre-line text-gray-800">
+        {{ profile.projects }}
+    </div>
+    {% endif %}
+
+    <!-- EDUCATION -->
+    <h2 class="mt-8 text-xl font-bold tracking-widest text-gray-800">EDUCATION</h2>
+    <p class="mt-2 font-semibold text-gray-900">{{ profile.degree }}</p>
+    <p class="text-gray-700">{{ profile.university }}</p>
+
+    {% if profile.extra_education %}
+    <p class="mt-2 whitespace-pre-line text-gray-700">{{ profile.extra_education }}</p>
+    {% endif %}
+
+    <!-- SKILLS -->
+    {% if profile.skills %}
+    <h2 class="mt-8 text-xl font-bold tracking-widest text-gray-800">TECHNICAL SKILLS</h2>
+    <p class="mt-2 whitespace-pre-line text-gray-800">{{ profile.skills }}</p>
     {% endif %}
 
 </div>
+
+<script>
+function printCV() {
+    window.print();
+}
+</script>
+
+<style>
+@media print {
+
+    @page {
+        margin: 0; /* Removes browser header/footer */
+    }
+
+    nav, footer, .print\:hidden {
+        display: none !important;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        background: white;
+    }
+
+    .print-area {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        box-shadow: none !important;
+    }
+}
+</style>
+
 
 {% endblock %}
